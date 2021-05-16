@@ -6,7 +6,6 @@ use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateThreadsTest extends TestCase
 {
@@ -17,7 +16,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->assertGuest();
 
-        $thread = Thread::factory()->make();
+        $thread = make(Thread::class);
 
         $this->post(route('threads.store'), $thread->toArray());
     }
@@ -25,8 +24,8 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function an_authenticated_user_can_create_new_threads()
     {
-        $this->be(User::factory()->create());
-        $thread = Thread::factory()->make();
+        $this->be(create(User::class));
+        $thread = make(Thread::class);
 
         $this->post(route('threads.store', $thread->toArray()));
 
