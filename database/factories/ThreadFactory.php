@@ -22,7 +22,7 @@ class ThreadFactory extends Factory
             'user_id' => function () {
                 return User::factory()->create()->id;
             },
-            'title' => $this->faker->sentence(),
+            'title' => $this->faker->sentence,
             'body' => $this->faker->paragraph(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
