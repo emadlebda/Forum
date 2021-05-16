@@ -14,4 +14,9 @@ class Thread extends Model
         'title',
         'body',
     ];
+
+    public function replies()
+    {
+        return $this->hasMany(Reply::class);
+    }
 }
