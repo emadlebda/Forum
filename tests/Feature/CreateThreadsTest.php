@@ -30,8 +30,11 @@ class CreateThreadsTest extends TestCase
         $this->post(route('threads.store', $thread->toArray()));
 
         $this->assertDatabaseCount('threads', 1);
-//        $this->get(route('threads.show', $thread))
-//            ->assertSee($thread->title)
-//            ->assertSee($thread->body);
+    }
+
+    /** @test */
+    public function guests_cannot_see_create_thread_page()
+    {
+        $this->get(route('threads.create'))->assertRedirect(route('login'));
     }
 }
