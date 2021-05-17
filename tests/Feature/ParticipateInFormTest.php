@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -15,8 +16,13 @@ class ParticipateInFormTest extends TestCase
     /** @test */
     public function unauthenticated_users_may_not_add_replies()
     {
-        $this->assertGuest();
-        $this->post('/thread/1/replies', []);
+        $channel = create(Channel::class);
+        $thread = create(Thread::class);
+        
+        $this->assertGuest()
+            ->post(route('replies.store', [$channel, $thread]), [])
+            ->assertRedirect(route('login'));
+
     }
 
     /** @test */
@@ -28,9 +34,9 @@ class ParticipateInFormTest extends TestCase
         $thread = create(Thread::class);
         $reply = create(Reply::class);
 
-        $this->post(route('replies.store', $thread), $reply->toArray());
+        $this->post(route('replies.store', [$thread->channel, $thread]), $reply->toArray());
 
-        $this->get(route('threads.show', $thread))
+        $this->get(route('threads.show', [$thread->channel, $thread]))
             ->assertSee($reply->body);
     }
 }

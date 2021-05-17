@@ -30,4 +30,9 @@ class Thread extends Model
     {
         $this->replies()->create($reply);
     }
+
+    public function channel()
+    {
+        return $this->belongsTo(Channel::class);
+    }
 }

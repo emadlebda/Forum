@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
@@ -22,15 +23,15 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
-    public function a_thread_can_have_replies()
-    {
-        $this->assertInstanceOf(Collection::class, $this->thread->replies);
-    }
-
-    /** @test */
     public function a_thread_has_a_creator()
     {
         $this->assertInstanceOf(User::class, $this->thread->creator);
+    }
+
+    /** @test */
+    public function a_thread_can_have_replies()
+    {
+        $this->assertInstanceOf(Collection::class, $this->thread->replies);
     }
 
 
@@ -43,5 +44,12 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    /** @test */
+    public function a_thread_belongs_to_channel()
+    {
+        $thread = create(Thread::class);
+        $this->assertInstanceOf(Channel::class, $thread->channel);
     }
 }

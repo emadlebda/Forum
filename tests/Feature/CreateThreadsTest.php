@@ -14,11 +14,11 @@ class CreateThreadsTest extends TestCase
     /** @test */
     function guests_may_not_create_threads()
     {
+        $this->get(route('threads.create'))->assertRedirect(route('login'));
+
         $this->assertGuest();
 
-        $thread = make(Thread::class);
-
-        $this->post(route('threads.store'), $thread->toArray());
+        $this->post('/threads')->assertRedirect(route('login'));
     }
 
     /** @test */
@@ -30,11 +30,5 @@ class CreateThreadsTest extends TestCase
         $this->post(route('threads.store', $thread->toArray()));
 
         $this->assertDatabaseCount('threads', 1);
-    }
-
-    /** @test */
-    public function guests_cannot_see_create_thread_page()
-    {
-        $this->get(route('threads.create'))->assertRedirect(route('login'));
     }
 }

@@ -32,7 +32,7 @@
             <div class="row justify-content-center mt-3">
                 <div class="col-md-8">
                     <div class="card">
-                        <form action="{{route('replies.store',$thread)}}" method="post">
+                        <form action="{{route('replies.store',[$thread->channel,$thread])}}" method="post">
                             @csrf
                             <textarea name="body" id="body" class="form-control" rows="5"
                                       placeholder="Have something to say?"></textarea>
