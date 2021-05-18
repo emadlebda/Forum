@@ -17,6 +17,11 @@ class Thread extends Model
         'channel_id',
     ];
 
+    protected $with = [
+        'creator',
+        'channel'
+    ];
+
     protected static function boot()
     {
         parent::boot();

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadsController;
@@ -31,3 +32,4 @@ Route::get('threads/{channel}', [ThreadsController::class, 'index'])->name('thre
 //Route::resource('threads', ThreadsController::class);
 
 Route::post('threads/{channel}/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
+Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store'])->name('reply.favorite');

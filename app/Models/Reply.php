@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\Favoritable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
-    use HasFactory;
+    use HasFactory, Favoritable;
 
     protected $fillable = [
         'thread_id',
@@ -15,6 +16,10 @@ class Reply extends Model
         'body',
     ];
 
+    protected $with = [
+        'owner',
+        'favorites'
+    ];
 
     public function owner()
     {
