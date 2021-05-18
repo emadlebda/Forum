@@ -53,7 +53,7 @@
                            aria-expanded="false">Channels <span class="caret"></span></a>
 
                         <ul class="dropdown-menu">
-                            @foreach (App\Models\Channel::all() as $channel)
+                            @foreach ($channels as $channel)
                                 <li>
                                     <a class="dropdown-item" href="{{route('threads.by.channel',$channel)}}">
                                         {{ $channel->name }}
