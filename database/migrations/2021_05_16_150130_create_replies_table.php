@@ -10,7 +10,7 @@ class CreateRepliesTable extends Migration
     {
         Schema::create('replies', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('thread_id')->constrained();
+            $table->foreignId('thread_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained();
             $table->text('body');
             $table->timestamps();

@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                @foreach ($threads as $thread)
+                @forelse ($threads as $thread)
                     <div class="card mb-3">
                         <div class="card-header">
                             <div class="level">
@@ -26,7 +26,9 @@
                             </article>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <h4 class="text-center">No Threads yet!</h4>
+                @endforelse
             </div>
         </div>
     </div>

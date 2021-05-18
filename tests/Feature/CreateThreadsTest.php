@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Channel;
+use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -48,10 +49,45 @@ class CreateThreadsTest extends TestCase
     /** @test */
     public function a_thread_requires_a_valid_channel()
     {
-        $this->publishThread(['channel_id' => null])->assertSessionHasErrors('channel_id');
-        $channel = create(Channel::class);
-        $channel2 = create(Channel::class);
-        $this->publishThread(['channel_id' => 999])->assertSessionHasErrors('channel_id');
+        $this->publishThread(['channel_id' => null])
+            ->assertSessionHasErrors('channel_id');
+
+        create(Channel::class, [], 2);
+
+        $this->publishThread(['channel_id' => 999])
+            ->assertSessionHasErrors('channel_id');
+    }
+
+    /** @test */
+    public function authorized_users_can_delete_threads()
+    {
+        $this->withoutExceptionHandling();
+        $this->signIn();
+
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $this->json('DELETE', route('threads.delete', [$thread->channel, $thread]))
+            ->assertStatus(204);
+
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+    /** @test */
+    function unauthorized_users_may_not_delete_threads()
+    {
+        $thread = create(Thread::class);
+
+        $this->assertGuest();
+
+        $this->delete(route('threads.delete', [$thread->channel, $thread]))
+            ->assertRedirect('/login');
+        $this->assertDatabaseHas('threads', ['id' => $thread->id]);
+
+        $this->signIn();
+        $this->delete(route('threads.delete', [$thread->channel, $thread]))
+            ->assertStatus(403);
     }
 
     protected function publishThread($overrides = [])

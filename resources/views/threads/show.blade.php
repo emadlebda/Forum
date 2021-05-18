@@ -6,8 +6,20 @@
             <div class="col-md-8">
                 <div class="card mb-5">
                     <div class="card-header">
-                        <a href="{{route('profile',$thread->creator)}}">{{$thread->creator->name}}</a> posted:
-                        {{ $thread->title }}
+                        <div class="level">
+                            <span class="flex">
+                                <a href="{{route('profile',$thread->creator)}}">{{$thread->creator->name}}</a> posted:{{ $thread->title }}
+                            </span>
+
+                            @can('delete',$thread)
+                                <form action="{{route('threads.delete',[$thread->channel,$thread])}}" method="post">
+                                    @csrf
+                                    @method('delete')
+
+                                    <button type="submit" class="btn btn-danger ">Delete Thread</button>
+                                </form>
+                            @endcan
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -15,9 +27,11 @@
                     </div>
                 </div>
 
-                @foreach ($replies as $reply)
+                @forelse ($replies as $reply)
                     <x-reply :reply="$reply"></x-reply>
-                @endforeach
+                @empty
+                    <h4 class="text-center">No Replies yet!</h4>
+                @endforelse
 
                 {{$replies->links()}}
 
@@ -42,8 +56,8 @@
                 <div class="card">
                     <div class="card-body">
                         <p>
-                            This thread was published {{ $thread->created_at->diffForHumans() }} ago by
-                            <a href="{{ route('profile', $reply->owner) }}">{{$thread->creator->name}}</a>, <br>and
+                            This thread was published {{ $thread->created_at->diffForHumans() }} by
+                            <a href="{{ route('profile', $thread->creator) }}">{{$thread->creator->name}}</a>, <br>and
                             currently has {{$thread->replies_count}}
                             {{\Illuminate\Support\Str::plural('comment',$thread->replies_count)}}
                         </p>

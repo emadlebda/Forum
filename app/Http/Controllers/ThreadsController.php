@@ -6,7 +6,6 @@ use App\Filters\ThreadFilters;
 use App\Http\Requests\StoreThreadRequest;
 use App\Models\Channel;
 use App\Models\Thread;
-use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -58,9 +57,17 @@ class ThreadsController extends Controller
         //
     }
 
-    public function destroy(Thread $thread): RedirectResponse
+    public function destroy(Channel $channel, Thread $thread)
     {
-        //
+//        abort_if($thread->user_id != auth()->id(), 403,'you do not have permission to do this');
+
+        $this->authorize('delete', $thread);
+        $thread->delete();
+
+        if (request()->wantsJson())
+            return response([], 204);
+
+        return redirect()->route('threads.index');
     }
 
     /**
