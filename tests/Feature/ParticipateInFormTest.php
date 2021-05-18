@@ -18,7 +18,7 @@ class ParticipateInFormTest extends TestCase
     {
         $channel = create(Channel::class);
         $thread = create(Thread::class);
-        
+
         $this->assertGuest()
             ->post(route('replies.store', [$channel, $thread]), [])
             ->assertRedirect(route('login'));
@@ -38,5 +38,18 @@ class ParticipateInFormTest extends TestCase
 
         $this->get(route('threads.show', [$thread->channel, $thread]))
             ->assertSee($reply->body);
+    }
+
+    /** @test */
+    public function a_reply_requires_a_body()
+    {
+        $this->signIn();
+
+        $this->withExceptionHandling();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class, ['body' => null]);
+
+        $this->post(route('replies.store', [$thread->channel, $thread]), $reply->toArray())
+            ->assertSessionHasErrors('body');
     }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RepliesController;
+use App\Http\Controllers\ThreadsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +20,14 @@ Route::view('/', 'welcome');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('threads', [\App\Http\Controllers\ThreadsController::class, 'index'])->name('threads.index');
-Route::get('threads/create', [\App\Http\Controllers\ThreadsController::class, 'create'])->name('threads.create');
-Route::get('threads/{channel:slug}/{thread}', [\App\Http\Controllers\ThreadsController::class, 'show'])->name('threads.show');
-Route::post('threads', [\App\Http\Controllers\ThreadsController::class, 'store'])->name('threads.store');
-//Route::resource('threads', \App\Http\Controllers\ThreadsController::class);
+Route::get('threads', [ThreadsController::class, 'index'])->name('threads.index');
+Route::get('threads/create', [ThreadsController::class, 'create'])->name('threads.create');
+Route::get('threads/{channel}/{thread}', [ThreadsController::class, 'show'])->name('threads.show');
+Route::post('threads', [ThreadsController::class, 'store'])->name('threads.store');
+Route::get('threads/{channel}', [ThreadsController::class, 'index'])->name('threads.by.channel');
 
-Route::post('threads/{channel}/{thread}/replies', [\App\Http\Controllers\RepliesController::class, 'store'])->name('replies.store');
+//Route::resource('threads', ThreadsController::class);
+
+Route::post('threads/{channel}/{thread}/replies', [RepliesController::class, 'store'])->name('replies.store');
