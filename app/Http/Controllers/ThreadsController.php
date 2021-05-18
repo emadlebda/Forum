@@ -23,6 +23,7 @@ class ThreadsController extends Controller
         } else {
             $threads = Thread::latest()->get();
         }
+        $threads->load('channel');
 
         return view('threads.index', compact('threads'));
     }

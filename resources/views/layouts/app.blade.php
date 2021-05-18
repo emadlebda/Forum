@@ -41,6 +41,12 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('threads.create') }}">
+                            {{ __('New Thread') }}
+                        </a>
+                    </li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
                            aria-haspopup="true"

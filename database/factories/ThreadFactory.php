@@ -20,11 +20,8 @@ class ThreadFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => function () {
-                return User::factory()->create()->id;
-            }, 'channel_id' => function () {
-                return Channel::factory()->create()->id;
-            },
+            'user_id' => User::factory(),
+            'channel_id' => Channel::factory(),
             'title' => $this->faker->sentence,
             'body' => $this->faker->paragraph(),
             'created_at' => Carbon::now(),

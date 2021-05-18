@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Database\Seeder;
@@ -15,10 +16,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $threads = Thread::factory()->times(50)->create();
-
-        $threads->each(function ($thread) {
-            Reply::factory()->times(10)->create(['thread_id' => $thread->id]);
-        });
+        Thread::factory()
+            ->has(Reply::factory()->count(5))
+            ->count(50)
+            ->create();
     }
 }

@@ -13,6 +13,7 @@ class Thread extends Model
         'user_id',
         'title',
         'body',
+        'channel_id',
     ];
 
     public function replies()

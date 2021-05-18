@@ -20,12 +20,8 @@ class ReplyFactory extends Factory
     public function definition()
     {
         return [
-            'thread_id' => function () {
-                return Thread::factory()->create()->id;
-            },
-            'user_id' => function () {
-                return User::factory()->create()->id;
-            },
+            'thread_id' => Thread::factory(),
+            'user_id' => User::factory(),
             'body' => $this->faker->paragraph(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
