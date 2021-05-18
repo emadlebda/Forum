@@ -2,9 +2,9 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center mb-3">
+        <div class="row  mb-3">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <a href="#">{{$thread->creator->name}}</a> posted:
                         {{ $thread->title }}
@@ -14,23 +14,14 @@
                         <div class="body">{{$thread->body}}</div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    @foreach ($thread->replies as $reply)
-                        <x-reply :reply="$reply"></x-reply>
-                    @endforeach
-                </div>
-            </div>
-        </div>
+                @foreach ($replies as $reply)
+                    <x-reply :reply="$reply"></x-reply>
+                @endforeach
 
+                {{$replies->links()}}
 
-        @auth
-            <div class="row justify-content-center mt-3">
-                <div class="col-md-8">
+                @auth
                     <div class="card">
                         <form action="{{route('replies.store',[$thread->channel,$thread])}}" method="post">
                             @csrf
@@ -40,12 +31,24 @@
                             <button class="btn btn-primary btn-block">Leave comment</button>
                         </form>
                     </div>
+                @else
+                    <h4 class="text-center ">
+                        <a href="{{route('login')}}">Sign in </a> to participate in this discussion
+                    </h4>
+                @endauth
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p>
+                            This thread was published {{ $thread->created_at->diffForHumans() }} ago by
+                            <a href="#">{{$thread->creator->name}}</a>, <br>and currently has {{$thread->replies_count}}
+                            {{\Illuminate\Support\Str::plural('comment',$thread->replies_count)}}
+                        </p>
+                    </div>
                 </div>
             </div>
-        @else
-            <h4 class="text-center ">
-                <a href="{{route('login')}}">Sign in </a> to participate in this discussion
-            </h4>
-        @endauth
+        </div>
     </div>
 @endsection
