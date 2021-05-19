@@ -35,7 +35,8 @@ class ThreadsController extends Controller
     {
         $thread = Thread::create($request->validated() + ['user_id' => auth()->id()]);
 
-        return redirect()->route('threads.show', [$thread->channel, $thread]);
+        return redirect()->route('threads.show', [$thread->channel, $thread])
+            ->with('flash', 'Your thread has been published!');
     }
 
     public function show(Channel $channel, Thread $thread): View
