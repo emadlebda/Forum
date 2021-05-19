@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Activity;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -23,13 +24,12 @@ class ProfilesTest extends TestCase
     /** @test */
     function profiles_display_all_threads_created_by_the_associated_user()
     {
-        $user = create(User::class);
+        $this->signIn($user=create(User::class));
 
         $thread = create(Thread::class, ['user_id' => $user->id]);
 
         $this->get(route('profile', $user))
-            ->assertSee($thread->title)
-            ->assertSee($thread->body);
+            ->assertSee($thread->title);
 
     }
 }
