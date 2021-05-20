@@ -22,6 +22,12 @@ class Reply extends Model
         'favorites'
     ];
 
+    protected $appends = [
+        'favoritesCount',
+        'isFavorited'
+    ];
+
+
     public function owner()
     {
         return $this->belongsTo(User::class, 'user_id');

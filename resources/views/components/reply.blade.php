@@ -8,14 +8,7 @@
                 </h5>
 
                 <div>
-                    <form method="POST" action="{{route('reply.favorite',$reply)}}">
-                        @csrf
-
-                        <button type="submit"
-                                class="btn btn-outline-primary" {{ $reply->isFavorited() ? 'disabled' : '' }}>
-                            {{ $reply->favorites_count }} {{ Str::plural('Favorite', $reply->favorites_count) }}
-                        </button>
-                    </form>
+                    <favoriate :reply="{{$reply}}"></favoriate>
                 </div>
             </div>
         </div>

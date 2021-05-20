@@ -25,5 +25,6 @@ Route::delete('/replies/{reply}', [RepliesController::class, 'destroy'])->name('
 
 
 Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store'])->name('reply.favorite');
+Route::delete('/replies/{reply}/favorites', [FavoritesController::class, 'destroy'])->name('reply.favorite.delete');
 
 Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profile');

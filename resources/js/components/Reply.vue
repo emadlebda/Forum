@@ -1,6 +1,12 @@
 <script>
+
+import Favoriate from "./Favoriate";
+
 export default {
     props: ['attributes'],
+
+    components: {Favoriate},
+
     data() {
         return {
             editing: false,
