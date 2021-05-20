@@ -37,9 +37,13 @@ class RepliesController extends Controller
         //
     }
 
-    public function update(Request $request, Reply $reply): RedirectResponse
+    public function update(Request $request, Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+
+        $this->validate(request(), ['body' => 'required']);
+
+        $reply->update(request(['body']));
     }
 
     public function destroy(Reply $reply): RedirectResponse

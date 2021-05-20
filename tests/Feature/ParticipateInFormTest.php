@@ -79,4 +79,32 @@ class ParticipateInFormTest extends TestCase
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
+
+    /** @test */
+    function unauthorized_users_cannot_update_replies()
+    {
+        $this->withExceptionHandling();
+
+        $reply = create(Reply::class);
+
+        $this->patch(route('replies.update', $reply))
+            ->assertRedirect('login');
+
+        $this->signIn()
+            ->patch(route('replies.update', $reply))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    function authorized_users_can_update_replies()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $updatedReply = 'You been changed, fool.';
+        $this->patch(route('replies.update', $reply), ['body' => $updatedReply]);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedReply]);
+    }
 }
