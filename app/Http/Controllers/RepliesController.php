@@ -44,6 +44,10 @@ class RepliesController extends Controller
 
     public function destroy(Reply $reply): RedirectResponse
     {
-        //
+        $this->authorize('delete', $reply);
+
+        $reply->delete();
+
+        return back();
     }
 }
