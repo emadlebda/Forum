@@ -89,7 +89,7 @@
                                           method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-link">Delete Thread</button>
+                                        <button type="submit" class="btn btn-danger">Delete Thread</button>
                                     </form>
                                 @endcan
                             </div>

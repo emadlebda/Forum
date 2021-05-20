@@ -17,7 +17,7 @@ class RepliesController extends Controller
         $this->middleware('auth');
     }
 
-    public function store(StoreReplyRequest $request, Channel $channel, Thread $thread): RedirectResponse
+    public function store(StoreReplyRequest $request, Channel $channel, Thread $thread)
     {
         $reply = $thread->addReply([
             'body' => $request->body,
