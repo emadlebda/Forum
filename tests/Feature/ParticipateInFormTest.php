@@ -28,16 +28,13 @@ class ParticipateInFormTest extends TestCase
     /** @test */
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
-        $this->withoutExceptionHandling();
         $this->signIn();
 
         $thread = create(Thread::class);
         $reply = create(Reply::class);
 
         $this->post(route('replies.store', [$thread->channel, $thread]), $reply->toArray());
-
-        $this->get(route('threads.show', [$thread->channel, $thread]))
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     /** @test */

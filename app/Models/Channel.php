@@ -14,6 +14,18 @@ class Channel extends Model
         'slug',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function () {
+            \Artisan::call('cache:clear');
+        });
+
+        static::deleted(function () {
+            \Artisan::call('cache:clear');
+        });
+    }
 
     public function getRouteKeyName()
     {

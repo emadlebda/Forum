@@ -14,7 +14,12 @@ class RepliesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'index']);
+    }
+
+    public function index($channelId, Thread $thread)
+    {
+        return $thread->replies()->paginate(20);
     }
 
     public function store(StoreReplyRequest $request, Channel $channel, Thread $thread)
@@ -45,12 +50,12 @@ class RepliesController extends Controller
     {
         $this->authorize('update', $reply);
 
-        $this->validate(request(), ['body' => 'required']);
+        $this->validate($request, ['body' => 'required']);
 
         $reply->update(request(['body']));
     }
 
-    public function destroy(Reply $reply): RedirectResponse
+    public function destroy(Reply $reply)
     {
         $this->authorize('delete', $reply);
 

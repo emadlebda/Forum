@@ -7,7 +7,6 @@ use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ReadThreadsTest extends TestCase
@@ -34,15 +33,6 @@ class ReadThreadsTest extends TestCase
     {
         $this->get(route('threads.show', [$this->thread->channel, $this->thread]))
             ->assertSee($this->thread->title);
-    }
-
-    /** @test */
-    public function a_user_can_read_replies_that_are_associated_with_a_thread()
-    {
-        $reply = create(Reply::class, ['thread_id' => $this->thread->id]);
-        $this->get(route('threads.show', [$this->thread->channel, $this->thread]))
-            ->assertSee($reply->body);
-
     }
 
     /** @test */
@@ -80,5 +70,17 @@ class ReadThreadsTest extends TestCase
         $response = $this->getJson('threads?popular=1')->json();
 
         $this->assertEquals([3, 2, 1, 0], array_column($response, 'replies_count'));
+    }
+
+    /** @test */
+    function a_user_can_request_all_replies_for_a_given_thread()
+    {
+        $thread = create(Thread::class);
+        create(Reply::class, ['thread_id' => $thread->id], 2);
+
+        $response = $this->getJson(route('replies.index', [$thread->channel, $thread]))->json();
+
+        $this->assertCount(2, $response['data']);
+        $this->assertEquals(2, $response['total']);
     }
 }
