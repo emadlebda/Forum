@@ -1865,7 +1865,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     classes: function classes() {
-      return ['btn', this.active ? 'btn-primary' : 'btn-default'];
+      return ['btn', this.active ? 'btn-primary' : 'btn-outline-secondary'];
     },
     endpoint: function endpoint() {
       return '/replies/' + this.reply.id + '/favorites';
@@ -60182,7 +60182,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-xs btn-warning mr-1",
+                staticClass: "btn btn-xs btn-outline-secondary mr-1",
                 on: {
                   click: function($event) {
                     _vm.editing = true

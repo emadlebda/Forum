@@ -12,6 +12,7 @@ class CreateThreadsTable extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->unsignedInteger('channel_id')->nullable();
+            $table->unsignedInteger('replies_count')->default(0);
             $table->string('title');
             $table->text('body');
             $table->timestamps();

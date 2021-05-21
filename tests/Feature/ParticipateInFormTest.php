@@ -34,7 +34,9 @@ class ParticipateInFormTest extends TestCase
         $reply = create(Reply::class);
 
         $this->post(route('replies.store', [$thread->channel, $thread]), $reply->toArray());
+
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+        $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
     /** @test */
@@ -75,6 +77,7 @@ class ParticipateInFormTest extends TestCase
         $this->delete(route('replies.delete', $reply))->assertStatus(302);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
     }
 
     /** @test */

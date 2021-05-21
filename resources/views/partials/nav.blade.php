@@ -40,6 +40,13 @@
                             </a>
                         </li>
 
+                        <li>
+                            <a class="dropdown-item"
+                               href="{{route('threads.index').'?unanswered=1'}}">
+                                Unanswered Threads
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
 
